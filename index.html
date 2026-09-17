@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>안심급식</title>
+
+<style>
+/* =========================
+   기본 설정
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    background: #f3f6fb;
+    color: #2d3748;
+}
+
+header {
+    background: linear-gradient(135deg, #4f76b8, #668fd2);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin-top: 10px;
+    opacity: 0.95;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+
+/* =========================
+   카드
+========================= */
+
+.card {
+    background: white;
+    padding: 28px;
+    margin-bottom: 25px;
+    border-radius: 22px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #34465f;
+}
+
+
+/* =========================
+   입력창
+========================= */
+
+input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #d7dee8;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #5b82c4;
+}
+
+
+/* =========================
+   버튼
+========================= */
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 18px;
+    cursor: pointer;
+    background: #547bbb;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.88;
+}
+
+.main-button {
+    width: 100%;
+}
+
+.info {
+    color: #697586;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   알림
+========================= */
+
+.notification-button {
+    position: relative;
+    margin-top: 15px;
+    background: white;
+    color: #4f76b8;
+    padding: 13px 22px;
+}
+
+.notification-count {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 21px;
+    height: 21px;
+    margin-left: 5px;
+    border-radius: 50%;
+    background: #db5757;
+    color: white;
+    font-size: 12px;
+}
+
+.notification-panel {
+    display: none;
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 22px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+}
+
+.notification-panel.show {
+    display: block;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e4e8ee;
+}
+
+.notification-header h2 {
+    margin: 0;
+}
+
+.clear-button {
+    background: #e8edf4;
+    color: #4b596b;
+}
+
+.notification-item {
+    margin-top: 14px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #fff4f4;
+    border-left: 5px solid #df5b5b;
+}
+
+.notification-item.safe {
+    background: #effaf4;
+    border-left-color: #50a773;
+}
+
+.notification-item h3 {
+    margin: 0 0 10px;
+}
+
+.notification-item p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+.notification-date {
+    display: block;
+    margin-top: 10px;
+    color: #7b8796;
+    font-size: 12px;
+}
+
+
+/* =========================
+   학교 검색
+========================= */
+
+.school-result {
+    padding: 15px;
+    margin-top: 8px;
+    border: 1px solid #e1e6ed;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.school-result:hover {
+    background: #f1f6ff;
+}
+
+
+/* =========================
+   알레르기 선택
+========================= */
+
+.allergy-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.allergy {
+    padding: 10px 16px;
+    background: #edf1f6;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.allergy:hover {
+    background: #dce7f7;
+}
+
+.allergy.selected {
+    background: #547bbb;
+    color: white;
+}
+
+
+/* =========================
+   내 알레르기 저장 목록
+========================= */
+
+.my-allergies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 17px;
+}
+
+.allergy-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 8px 7px 14px;
+    background: #eef3fa;
+    border-radius: 25px;
+}
+
+.edit-btn {
+    padding: 5px 10px;
+    background: #e0a23c;
+    font-size: 12px;
+    border-radius: 15px;
+}
+
+.delete-btn {
+    padding: 5px 10px;
+    background: #dc5b5b;
+    font-size: 12px;
+    border-radius: 15px;
+}
+
+
+/* =========================
+   기간 선택
+========================= */
+
+.period-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.period-buttons button {
+    flex: 1;
+    background: #edf1f6;
+    color: #52606f;
+}
+
+.period-buttons button.active {
+    background: #547bbb;
+    color: white;
+}
+
+
+/* =========================
+   안내 박스
+========================= */
+
+.notice {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f1f6ff;
+    border-radius: 13px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+
+/* =========================
+   급식
+========================= */
+
+.day-box {
+    margin-top: 28px;
+}
+
+.day-title {
+    padding-bottom: 10px;
+    font-size: 19px;
+    font-weight: bold;
+    border-bottom: 2px solid #e7ecf3;
+}
+
+.menu {
+    margin-top: 10px;
+    padding: 16px;
+    background: #f7f9fc;
+    border-radius: 14px;
+}
+
+.menu.danger {
+    background: #fff1f1;
+    border: 2px solid #e25d5d;
+}
+
+.menu-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.warning {
+    margin-top: 10px;
+    color: #c94242;
+    font-size: 14px;
+}
+
+.expected-warning {
+    margin-top: 8px;
+    color: #c47820;
+    font-size: 14px;
+}
+
+
+/* =========================
+   해결 방법
+========================= */
+
+.solution {
+    margin-top: 13px;
+    padding: 13px;
+    background: #fff7d9;
+    border-radius: 11px;
+    line-height: 1.7;
+    font-size: 13px;
+}
+
+
+/* =========================
+   응급 대처
+========================= */
+
+.emergency-card {
+    border: 2px solid #ffd6d6;
+}
+
+.emergency-button {
+    width: 100%;
+    background: #dc5a5a;
+}
+
+.emergency-guide {
+    display: none;
+    margin-top: 20px;
+}
+
+.emergency-guide.show {
+    display: block;
+}
+
+.emergency-step {
+    display: flex;
+    gap: 15px;
+    padding: 17px;
+    margin-bottom: 10px;
+    background: #f7f9fc;
+    border-radius: 15px;
+}
+
+.step-number {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #547bbb;
+    color: white;
+    font-weight: bold;
+}
+
+.danger-step {
+    background: #fff1f1;
+    border: 1px solid #ffcaca;
+}
+
+.danger-step .step-number {
+    background: #dc5a5a;
+}
+
+
+/* =========================
+   전문가 의견
+========================= */
+
+.expert-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.expert-item {
+    padding: 18px;
+    background: #f7f9fc;
+    border: 1px solid #e4e9f0;
+    border-radius: 15px;
+    line-height: 1.7;
+}
+
+.expert-title {
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   추천 기능
+========================= */
+
+.recommend-item {
+    display: flex;
+    gap: 15px;
+    margin-top: 14px;
+    padding: 18px;
+    background: #eef5ff;
+    border-radius: 16px;
+}
+
+.recommend-number {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #547bbb;
+    color: white;
+    font-weight: bold;
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    .period-buttons {
+        flex-direction: column;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>안심급식</h1>
+
+    <p>
+        내 알레르기를 미리 확인하고
+        안전한 학교생활을 준비해요
+    </p>
+
+    <button
+        class="notification-button"
+        onclick="toggleNotifications()"
+    >
+        알림
+
+        <span
+            id="notificationCount"
+            class="notification-count"
+        >
+            0
+        </span>
+
+    </button>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- 알림함 -->
+
+<div
+    id="notificationPanel"
+    class="notification-panel"
+>
+
+    <div class="notification-header">
+
+        <h2>알레르기 알림</h2>
+
+        <button
+            class="clear-button"
+            onclick="clearNotifications()"
+        >
+            모두 삭제
+        </button>
+
+    </div>
+
+    <div id="notificationList"></div>
+
+</div>
+
+
+
+<!-- 내 정보 -->
+
+<div class="card">
+
+    <h2>내 정보</h2>
+
+    <input
+        id="nickname"
+        placeholder="닉네임을 입력하세요"
+    >
+
+    <input
+        id="apiKey"
+        placeholder="NEIS Open API 인증키를 입력하세요"
+    >
+
+    <button
+        class="main-button"
+        onclick="saveUser()"
+    >
+        정보 저장
+    </button>
+
+    <p
+        id="savedInfo"
+        class="info"
+    ></p>
+
+</div>
+
+
+
+<!-- 학교 검색 -->
+
+<div class="card">
+
+    <h2>학교 검색</h2>
+
+    <p class="info">
+        자신의 학교 이름을 직접 검색할 수 있습니다.
+    </p>
+
+    <input
+        id="schoolSearch"
+        placeholder="예: ○○고등학교"
+    >
+
+    <button
+        class="main-button"
+        onclick="searchSchool()"
+    >
+        학교 검색
+    </button>
+
+    <div id="schoolResults"></div>
+
+    <p
+        id="selectedSchool"
+        class="info"
+    ></p>
+
+</div>
+
+
+
+<!-- 알레르기 -->
+
+<div class="card">
+
+    <h2>내 알레르기</h2>
+
+    <p class="info">
+        공식 알레르기 항목을 선택하거나 목록에 없는 알레르기도 직접 입력할 수 있습니다.
+    </p>
+
+
+    <div class="allergy-list">
+
+        <div class="allergy" onclick="toggleAllergy(this,'난류')">난류</div>
+        <div class="allergy" onclick="toggleAllergy(this,'우유')">우유</div>
+        <div class="allergy" onclick="toggleAllergy(this,'메밀')">메밀</div>
+        <div class="allergy" onclick="toggleAllergy(this,'땅콩')">땅콩</div>
+        <div class="allergy" onclick="toggleAllergy(this,'대두')">대두</div>
+        <div class="allergy" onclick="toggleAllergy(this,'밀')">밀</div>
+        <div class="allergy" onclick="toggleAllergy(this,'고등어')">고등어</div>
+        <div class="allergy" onclick="toggleAllergy(this,'게')">게</div>
+        <div class="allergy" onclick="toggleAllergy(this,'새우')">새우</div>
+        <div class="allergy" onclick="toggleAllergy(this,'돼지고기')">돼지고기</div>
+        <div class="allergy" onclick="toggleAllergy(this,'복숭아')">복숭아</div>
+        <div class="allergy" onclick="toggleAllergy(this,'토마토')">토마토</div>
+        <div class="allergy" onclick="toggleAllergy(this,'아황산류')">아황산류</div>
+        <div class="allergy" onclick="toggleAllergy(this,'호두')">호두</div>
+        <div class="allergy" onclick="toggleAllergy(this,'닭고기')">닭고기</div>
+        <div class="allergy" onclick="toggleAllergy(this,'쇠고기')">쇠고기</div>
+        <div class="allergy" onclick="toggleAllergy(this,'오징어')">오징어</div>
+        <div class="allergy" onclick="toggleAllergy(this,'조개류')">조개류</div>
+        <div class="allergy" onclick="toggleAllergy(this,'잣')">잣</div>
+
+    </div>
+
+
+    <br>
+
+
+    <input
+        id="customAllergy"
+        placeholder="목록에 없는 알레르기 직접 입력 (예: 마늘, 깻잎)"
+    >
+
+
+    <button
+        class="main-button"
+        onclick="addCustomAllergy()"
+    >
+        알레르기 추가
+    </button>
+
+
+    <div
+        id="myAllergies"
+        class="my-allergies"
+    ></div>
+
+</div>
+
+
+
+<!-- 실제 급식 -->
+
+<div class="card">
+
+    <h2>실제 학교 급식</h2>
+
+
+    <div class="period-buttons">
+
+        <button
+            id="todayBtn"
+            onclick="setPeriod('today')"
+        >
+            오늘
+        </button>
+
+
+        <button
+            id="weekBtn"
+            onclick="setPeriod('week')"
+        >
+            이번 주
+        </button>
+
+
+        <button
+            id="monthBtn"
+            onclick="setPeriod('month')"
+        >
+            이번 달
+        </button>
+
+    </div>
+
+
+    <button
+        class="main-button"
+        onclick="loadMeals()"
+    >
+        실제 급식 불러오기
+    </button>
+
+
+    <div class="notice">
+
+        <b>빨간색 음식</b> :
+        내 알레르기와 관련된 음식
+
+        <br>
+
+        <b>공식 알레르기 정보</b> :
+        학교 급식표에 표시된 공식 알레르기 번호
+
+        <br>
+
+        <b>예상 재료</b> :
+        음식의 일반적인 조리 재료를 바탕으로 분석한 정보
+
+        <br><br>
+
+        예상 재료는 실제 학교의 조리법과 다를 수 있으므로
+        최종적으로 학교 급식 담당자나 보건교사에게 확인하는 것이 좋습니다.
+
+    </div>
+
+
+    <div id="mealList"></div>
+
+</div>
+
+
+
+<!-- 응급 대처 -->
+
+<div class="card emergency-card">
+
+    <h2>실수로 알레르기 음식을 먹었나요?</h2>
+
+    <p class="info">
+        알레르기 반응이 의심되면 혼자 해결하려 하지 말고
+        즉시 주변의 선생님이나 보건실에 알리세요.
+    </p>
+
+
+    <button
+        class="emergency-button"
+        onclick="showEmergencyGuide()"
+    >
+        기본 대처 방법 확인하기
+    </button>
+
+
+    <div
+        id="emergencyGuide"
+        class="emergency-guide"
+    >
+
+        <div class="emergency-step">
+
+            <div class="step-number">1</div>
+
+            <div>
+
+                <b>먹는 것을 즉시 멈추세요</b>
+
+                <p>
+                    해당 음식이나 의심되는 음식을 더 이상 먹지 않습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="emergency-step">
+
+            <div class="step-number">2</div>
+
+            <div>
+
+                <b>즉시 주변 어른에게 알리세요</b>
+
+                <p>
+                    학교에서는 선생님 또는 보건실에 바로 알립니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="emergency-step">
+
+            <div class="step-number">3</div>
+
+            <div>
+
+                <b>몸 상태를 확인하세요</b>
+
+                <p>
+                    평소와 다른 알레르기 증상이 나타나는지 확인하고
+                    의료진이나 보호자의 도움을 받습니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="emergency-step danger-step">
+
+            <div class="step-number">!</div>
+
+            <div>
+
+                <b>심한 이상 증상이 있으면 즉시 응급 도움을 요청하세요</b>
+
+                <p>
+                    호흡이 불편하거나 의식이 흐려지는 등 심각한 증상이 나타나면
+                    주변 어른에게 즉시 알리고 응급 의료 도움을 요청해야 합니다.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- 전문가 의견 -->
+
+<div class="card">
+
+    <h2>전문가 5명의 의견</h2>
+
+    <p class="info">
+        건강관리와 알레르기 예방에 필요한 기능을
+        여러 전문가의 관점에서 정리했습니다.
+    </p>
+
+
+    <div class="expert-list">
+
+
+        <div class="expert-item">
+
+            <div class="expert-title">
+                ① 보건교사
+            </div>
+
+            학생들이 위험 음식을 먹기 전에 미리 확인할 수 있는
+            사전 예방 기능이 중요합니다.
+
+        </div>
+
+
+        <div class="expert-item">
+
+            <div class="expert-title">
+                ② 알레르기 의료 전문가
+            </div>
+
+            공식 급식 정보와 앱이 예상한 재료를 구분해서 표시해야
+            학생들이 정보를 혼동하지 않을 수 있습니다.
+
+        </div>
+
+
+        <div class="expert-item">
+
+            <div class="expert-title">
+                ③ 영양사
+            </div>
+
+            위험 음식이 있는 경우 도시락이나
+            대체 가능한 식사 방법을 미리 안내하는 기능이 필요합니다.
+
+        </div>
+
+
+        <div class="expert-item">
+
+            <div class="expert-title">
+                ④ 건강관리 전문가
+            </div>
+
+            오늘뿐 아니라 일주일 또는 한 달 급식을 미리 확인하여
+            건강관리를 계획할 수 있어야 합니다.
+
+        </div>
+
+
+        <div class="expert-item">
+
+            <div class="expert-title">
+                ⑤ 청소년 의료 전문가
+            </div>
+
+            복잡한 알레르기 번호만 보여주는 것보다
+            음식 이름과 재료 이름으로 보여주는 것이 이해하기 쉽습니다.
+
+        </div>
+
+
+    </div>
+
+
+    <h2 style="margin-top:35px;">
+        전문가 의견을 바탕으로 선정한 핵심 기능 3가지
+    </h2>
+
+
+    <div class="recommend-item">
+
+        <div class="recommend-number">1</div>
+
+        <div>
+
+            <b>위험 음식 사전 예방</b>
+
+            <p>
+                오늘, 이번 주, 이번 달 급식을 미리 확인하여
+                위험한 음식을 먹기 전에 대비합니다.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="recommend-item">
+
+        <div class="recommend-number">2</div>
+
+        <div>
+
+            <b>특이 알레르기 재료 분석</b>
+
+            <p>
+                공식 19가지 항목뿐 아니라
+                마늘, 깻잎 등 개인별 특이 알레르기도 확인합니다.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="recommend-item">
+
+        <div class="recommend-number">3</div>
+
+        <div>
+
+            <b>맞춤형 알레르기 알림</b>
+
+            <p>
+                위험 음식이 발견되면 날짜, 요일, 음식 이름,
+                주의 재료를 한눈에 확인할 수 있습니다.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   전역 변수
+========================= */
+
+let selectedSchool = null;
+
+let allergies = [];
+
+let selectedPeriod = "today";
+
+let notifications =
+    JSON.parse(localStorage.getItem("notifications")) || [];
+
+
+/* =========================
+   공식 알레르기 번호
+========================= */
+
+const allergyMap = {
+
+    "1": "난류",
+    "2": "우유",
+    "3": "메밀",
+    "4": "땅콩",
+    "5": "대두",
+    "6": "밀",
+    "7": "고등어",
+    "8": "게",
+    "9": "새우",
+    "10": "돼지고기",
+    "11": "복숭아",
+    "12": "토마토",
+    "13": "아황산류",
+    "14": "호두",
+    "15": "닭고기",
+    "16": "쇠고기",
+    "17": "오징어",
+    "18": "조개류",
+    "19": "잣"
+
+};
+
+
+/* =========================
+   음식 기본 재료 데이터
+========================= */
+
+const foodIngredients = {
+
+    "김치볶음밥": [
+        "김치",
+        "밥",
+        "마늘",
+        "고추",
+        "고춧가루",
+        "간장",
+        "돼지고기"
+    ],
+
+    "김치찌개": [
+        "김치",
+        "마늘",
+        "고추",
+        "고춧가루",
+        "돼지고기"
+    ],
+
+    "된장찌개": [
+        "된장",
+        "대두",
+        "두부",
+        "마늘",
+        "고추"
+    ],
+
+    "된장국": [
+        "된장",
+        "대두",
+        "마늘"
+    ],
+
+    "불고기": [
+        "쇠고기",
+        "간장",
+        "대두",
+        "마늘"
+    ],
+
+    "제육볶음": [
+        "돼지고기",
+        "고추장",
+        "고춧가루",
+        "마늘",
+        "간장"
+    ],
+
+    "닭갈비": [
+        "닭고기",
+        "고추장",
+        "고춧가루",
+        "마늘"
+    ],
+
+    "잡채": [
+        "당면",
+        "간장",
+        "대두",
+        "마늘"
+    ],
+
+    "떡볶이": [
+        "떡",
+        "고추장",
+        "고춧가루",
+        "마늘"
+    ],
+
+    "비빔밥": [
+        "밥",
+        "고추장",
+        "고추",
+        "대두",
+        "난류"
+    ],
+
+    "마파두부": [
+        "두부",
+        "대두",
+        "돼지고기",
+        "마늘",
+        "고추"
+    ],
+
+    "볶음밥": [
+        "밥",
+        "난류",
+        "대두",
+        "간장"
+    ]
+
+};
+
+
+/* =========================
+   메뉴 이름 키워드 분석
+========================= */
+
+const keywordIngredients = {
+
+    "김치": [
+        "김치",
+        "마늘",
+        "고추",
+        "고춧가루"
+    ],
+
+    "마늘": [
+        "마늘"
+    ],
+
+    "깻잎": [
+        "깻잎"
+    ],
+
+    "새우": [
+        "새우"
+    ],
+
+    "게": [
+        "게"
+    ],
+
+    "오징어": [
+        "오징어"
+    ],
+
+    "고등어": [
+        "고등어"
+    ],
+
+    "닭": [
+        "닭고기"
+    ],
+
+    "돼지": [
+        "돼지고기"
+    ],
+
+    "돈육": [
+        "돼지고기"
+    ],
+
+    "쇠고기": [
+        "쇠고기"
+    ],
+
+    "소고기": [
+        "쇠고기"
+    ],
+
+    "우유": [
+        "우유"
+    ],
+
+    "치즈": [
+        "우유"
+    ],
+
+    "계란": [
+        "난류"
+    ],
+
+    "달걀": [
+        "난류"
+    ],
+
+    "두부": [
+        "대두"
+    ],
+
+    "콩": [
+        "대두"
+    ],
+
+    "간장": [
+        "대두"
+    ],
+
+    "빵": [
+        "밀"
+    ],
+
+    "복숭아": [
+        "복숭아"
+    ],
+
+    "토마토": [
+        "토마토"
+    ]
+
+};
+
+
+/* =========================
+   사용자 정보 저장
+========================= */
+
+function saveUser() {
+
+    const nickname =
+        document.getElementById("nickname").value.trim();
+
+    const apiKey =
+        document.getElementById("apiKey").value.trim();
+
+    localStorage.setItem("nickname", nickname);
+    localStorage.setItem("apiKey", apiKey);
+
+    document.getElementById("savedInfo").innerText =
+        "정보가 저장되었습니다.";
+
+}
+
+
+/* =========================
+   학교 검색
+========================= */
+
+async function searchSchool() {
+
+    const key =
+        document.getElementById("apiKey").value.trim();
+
+    const schoolName =
+        document.getElementById("schoolSearch").value.trim();
+
+    if (!key) {
+        alert("먼저 NEIS Open API 인증키를 입력해주세요.");
+        return;
+    }
+
+    if (!schoolName) {
+        alert("검색할 학교 이름을 입력해주세요.");
+        return;
+    }
+
+    const url =
+        `https://open.neis.go.kr/hub/schoolInfo` +
+        `?KEY=${encodeURIComponent(key)}` +
+        `&Type=json` +
+        `&pIndex=1` +
+        `&pSize=20` +
+        `&SCHUL_NM=${encodeURIComponent(schoolName)}`;
+
+    try {
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const results =
+            document.getElementById("schoolResults");
+
+        results.innerHTML = "";
+
+        if (
+            !data.schoolInfo ||
+            !data.schoolInfo[1] ||
+            !data.schoolInfo[1].row
+        ) {
+            results.innerHTML =
+                "<p class='info'>검색된 학교가 없습니다.</p>";
+            return;
+        }
+
+        data.schoolInfo[1].row.forEach(school => {
+
+            const div = document.createElement("div");
+
+            div.className = "school-result";
+
+            div.innerHTML = `
+                <b>${escapeHTML(school.SCHUL_NM)}</b>
+                <br>
+                <span class="info">
+                    ${escapeHTML(school.ORG_RDNMA || "")}
+                </span>
+            `;
+
+            div.onclick = function() {
+
+                selectedSchool = school;
+
+                localStorage.setItem(
+                    "school",
+                    JSON.stringify(school)
+                );
+
+                document.getElementById("selectedSchool").innerText =
+                    "선택한 학교: " + school.SCHUL_NM;
+
+                results.innerHTML = "";
+
+            };
+
+            results.appendChild(div);
+
+        });
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert("학교 검색 중 오류가 발생했습니다.");
+
+    }
+
+}
+
+
+/* =========================
+   알레르기 선택
+========================= */
+
+function toggleAllergy(element, allergy) {
+
+    if (allergies.includes(allergy)) {
+
+        allergies =
+            allergies.filter(item => item !== allergy);
+
+    } else {
+
+        allergies.push(allergy);
+
+    }
+
+    saveAllergies();
+    updateAllergyUI();
+
+}
+
+
+/* =========================
+   직접 알레르기 추가
+========================= */
+
+function addCustomAllergy() {
+
+    const input =
+        document.getElementById("customAllergy");
+
+    const value =
+        input.value.trim();
+
+    if (!value) {
+        alert("알레르기 이름을 입력해주세요.");
+        return;
+    }
+
+    if (allergies.includes(value)) {
+        alert("이미 등록된 알레르기입니다.");
+        return;
+    }
+
+    allergies.push(value);
+
+    input.value = "";
+
+    saveAllergies();
+    updateAllergyUI();
+
+}
+
+
+/* =========================
+   알레르기 수정
+========================= */
+
+function editAllergy(index) {
+
+    const currentValue = allergies[index];
+
+    const newValue =
+        prompt(
+            "알레르기 이름을 수정하세요.",
+            currentValue
+        );
+
+    if (!newValue || !newValue.trim()) {
+        return;
+    }
+
+    allergies[index] =
+        newValue.trim();
+
+    saveAllergies();
+    updateAllergyUI();
+
+}
+
+
+/* =========================
+   알레르기 삭제
+========================= */
+
+function deleteAllergy(index) {
+
+    allergies.splice(index, 1);
+
+    saveAllergies();
+    updateAllergyUI();
+
+}
+
+
+/* =========================
+   알레르기 저장
+========================= */
+
+function saveAllergies() {
+
+    localStorage.setItem(
+        "allergies",
+        JSON.stringify(allergies)
+    );
+
+}
+
+
+/* =========================
+   알레르기 화면 업데이트
+========================= */
+
+function updateAllergyUI() {
+
+    const output =
+        document.getElementById("myAllergies");
+
+    output.innerHTML = "";
+
+    allergies.forEach((allergy, index) => {
+
+        const tag =
+            document.createElement("div");
+
+        tag.className =
+            "allergy-tag";
+
+        /* 수정, 삭제에서 이모티콘 제거 */
+
+        tag.innerHTML = `
+            <span>${escapeHTML(allergy)}</span>
+
+            <button
+                class="edit-btn"
+                onclick="editAllergy(${index})"
+            >
+                수정
+            </button>
+
+            <button
+                class="delete-btn"
+                onclick="deleteAllergy(${index})"
+            >
+                삭제
+            </button>
+        `;
+
+        output.appendChild(tag);
+
+    });
+
+
+    document
+        .querySelectorAll(".allergy")
+        .forEach(button => {
+
+            const match =
+                button
+                .getAttribute("onclick")
+                .match(/'([^']+)'/);
+
+            if (
+                match &&
+                allergies.includes(match[1])
+            ) {
+
+                button.classList.add("selected");
+
+            } else {
+
+                button.classList.remove("selected");
+
+            }
+
+        });
+
+}
+
+
+/* =========================
+   기간 선택
+========================= */
+
+function setPeriod(period) {
+
+    selectedPeriod = period;
+
+    ["today", "week", "month"].forEach(type => {
+
+        document
+            .getElementById(type + "Btn")
+            .classList.remove("active");
+
+    });
+
+    document
+        .getElementById(period + "Btn")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   날짜 형식
+========================= */
+
+function formatDate(date) {
+
+    const year = date.getFullYear();
+
+    const month =
+        String(date.getMonth() + 1).padStart(2, "0");
+
+    const day =
+        String(date.getDate()).padStart(2, "0");
+
+    return year + month + day;
+
+}
+
+
+/* =========================
+   날짜 범위
+========================= */
+
+function getDateRange() {
+
+    const today = new Date();
+
+    let start;
+    let end;
+
+    if (selectedPeriod === "today") {
+
+        start = new Date(today);
+        end = new Date(today);
+
+    }
+
+    else if (selectedPeriod === "week") {
+
+        const day = today.getDay();
+
+        const mondayOffset =
+            day === 0 ? -6 : 1 - day;
+
+        start = new Date(today);
+
+        start.setDate(
+            today.getDate() + mondayOffset
+        );
+
+        end = new Date(start);
+
+        end.setDate(
+            start.getDate() + 4
+        );
+
+    }
+
+    else {
+
+        start =
+            new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                1
+            );
+
+        end =
+            new Date(
+                today.getFullYear(),
+                today.getMonth() + 1,
+                0
+            );
+
+    }
+
+    return {
+        start: formatDate(start),
+        end: formatDate(end)
+    };
+
+}
+
+
+/* =========================
+   공식 알레르기 분석
+========================= */
+
+function findOfficialAllergies(menu) {
+
+    const matches =
+        menu.match(/\(([\d.\s]+)\)/);
+
+    if (!matches) {
+        return [];
+    }
+
+    const numbers =
+        matches[1].match(/\d+/g) || [];
+
+    const found = [];
+
+    numbers.forEach(number => {
+
+        const allergy =
+            allergyMap[number];
+
+        if (
+            allergy &&
+            allergies.includes(allergy)
+        ) {
+            found.push(allergy);
+        }
+
+    });
+
+    return [...new Set(found)];
+
+}
+
+
+/* =========================
+   메뉴 이름 정리
+========================= */
+
+function cleanMenuName(menu) {
+
+    return menu
+        .replace(/\([^)]*\)/g, "")
+        .replace(/<[^>]*>/g, "")
+        .trim();
+
+}
+
+
+/* =========================
+   예상 재료 분석
+========================= */
+
+function findExpectedIngredients(menuName) {
+
+    const found = [];
+
+    for (const food in foodIngredients) {
+
+        if (menuName.includes(food)) {
+
+            foodIngredients[food].forEach(ingredient => {
+
+                if (
+                    allergies.includes(ingredient)
+                ) {
+                    found.push(ingredient);
+                }
+
+            });
+
+        }
+
+    }
+
+
+    for (const keyword in keywordIngredients) {
+
+        if (menuName.includes(keyword)) {
+
+            keywordIngredients[keyword].forEach(ingredient => {
+
+                if (
+                    allergies.includes(ingredient)
+                ) {
+                    found.push(ingredient);
+                }
+
+            });
+
+        }
+
+    }
+
+
+    allergies.forEach(allergy => {
+
+        if (
+            allergy.length >= 2 &&
+            menuName.includes(allergy)
+        ) {
+            found.push(allergy);
+        }
+
+    });
+
+    return [...new Set(found)];
+
+}
+
+
+/* =========================
+   해결 방법
+========================= */
+
+function getSolution(ingredients) {
+
+    return `
+        <b>미리 대비하세요.</b><br>
+
+        해당 음식에
+        ${escapeHTML(ingredients.join(", "))}
+        과 관련된 알레르기 위험이 표시되었습니다.
+
+        <br><br>
+
+        가능하다면 안전한 도시락을 준비하거나
+        학교에서 먹을 수 있는 대체 음식을 미리 준비하세요.
+    `;
+
+}
+
+
+/* =========================
+   실제 급식 불러오기
+========================= */
+
+async function loadMeals() {
+
+    const key =
+        document.getElementById("apiKey").value.trim();
+
+    if (!key) {
+        alert("NEIS Open API 인증키를 입력해주세요.");
+        return;
+    }
+
+    if (!selectedSchool) {
+        alert("먼저 학교를 검색하고 선택해주세요.");
+        return;
+    }
+
+    const range = getDateRange();
+
+    const url =
+        `https://open.neis.go.kr/hub/mealServiceDietInfo` +
+        `?KEY=${encodeURIComponent(key)}` +
+        `&Type=json` +
+        `&pIndex=1` +
+        `&pSize=100` +
+        `&ATPT_OFCDC_SC_CODE=${selectedSchool.ATPT_OFCDC_SC_CODE}` +
+        `&SD_SCHUL_CODE=${selectedSchool.SD_SCHUL_CODE}` +
+        `&MLSV_FROM_YMD=${range.start}` +
+        `&MLSV_TO_YMD=${range.end}`;
+
+    const mealList =
+        document.getElementById("mealList");
+
+    mealList.innerHTML =
+        "<p class='info'>실제 급식을 불러오는 중입니다...</p>";
+
+    try {
+
+        const response =
+            await fetch(url);
+
+        const data =
+            await response.json();
+
+        mealList.innerHTML = "";
+
+        if (
+            !data.mealServiceDietInfo ||
+            !data.mealServiceDietInfo[1] ||
+            !data.mealServiceDietInfo[1].row
+        ) {
+
+            mealList.innerHTML =
+                "<p class='info'>선택한 기간의 급식 정보가 없습니다.</p>";
+
+            return;
+        }
+
+        const meals =
+            data.mealServiceDietInfo[1].row;
+
+        const dangerFoods = [];
+
+        meals.forEach(meal => {
+
+            const dayBox =
+                document.createElement("div");
+
+            dayBox.className = "day-box";
+
+            dayBox.innerHTML = `
+                <div class="day-title">
+                    ${formatKoreanDate(meal.MLSV_YMD)}
+                </div>
+            `;
+
+            const menus =
+                meal.DDISH_NM.split(/<br\s*\/?>/i);
+
+            menus.forEach(menu => {
+
+                const cleanName =
+                    cleanMenuName(menu);
+
+                if (!cleanName) return;
+
+                const official =
+                    findOfficialAllergies(menu);
+
+                const expected =
+                    findExpectedIngredients(cleanName);
+
+                const dangerIngredients =
+                    [...new Set([
+                        ...official,
+                        ...expected
+                    ])];
+
+                const isDanger =
+                    dangerIngredients.length > 0;
+
+                const menuBox =
+                    document.createElement("div");
+
+                menuBox.className =
+                    isDanger ? "menu danger" : "menu";
+
+                let html = `
+                    <div class="menu-name">
+                        ${escapeHTML(cleanName)}
+                    </div>
+                `;
+
+                if (official.length > 0) {
+
+                    html += `
+                        <div class="warning">
+                            공식 알레르기 정보:
+                            <b>${escapeHTML(official.join(", "))}</b>
+                        </div>
+                    `;
+
+                }
+
+                if (expected.length > 0) {
+
+                    html += `
+                        <div class="expected-warning">
+                            예상 재료:
+                            <b>${escapeHTML(expected.join(", "))}</b>
+                        </div>
+                    `;
+
+                }
+
+                if (isDanger) {
+
+                    dangerFoods.push({
+
+                        date: meal.MLSV_YMD,
+                        menu: cleanName,
+                        ingredients: dangerIngredients
+
+                    });
+
+                    html += `
+                        <div class="solution">
+                            ${getSolution(dangerIngredients)}
+                        </div>
+                    `;
+
+                }
+
+                menuBox.innerHTML = html;
+
+                dayBox.appendChild(menuBox);
+
+            });
+
+            mealList.appendChild(dayBox);
+
+        });
+
+        createMealNotification(
+            dangerFoods
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        mealList.innerHTML = `
+            <p class="info">
+                급식을 불러오는 중 오류가 발생했습니다.
+                API 인증키를 확인해주세요.
+            </p>
+        `;
+
+    }
+
+}
+
+
+/* =========================
+   급식 알림 만들기
+========================= */
+
+function createMealNotification(dangerFoods) {
+
+    notifications =
+        notifications.filter(
+            notification =>
+                notification.type !== "meal" ||
+                notification.period !== selectedPeriod
+        );
+
+    if (dangerFoods.length === 0) {
+
+        addNotification({
+
+            title: "급식 확인 완료",
+
+            message:
+                "선택한 기간의 급식에서 현재 등록된 알레르기와 관련된 위험 음식이 발견되지 않았습니다.",
+
+            type: "meal",
+
+            period: selectedPeriod,
+
+            safe: true
+
+        });
+
+        return;
+
+    }
+
+
+    const groupedFoods = {};
+
+    dangerFoods.forEach(food => {
+
+        if (!groupedFoods[food.date]) {
+            groupedFoods[food.date] = [];
+        }
+
+        groupedFoods[food.date].push(food);
+
+    });
+
+
+    let message = "";
+
+    Object.keys(groupedFoods)
+        .sort()
+        .forEach(date => {
+
+            message +=
+                `날짜: ${formatKoreanDate(date)}\n\n`;
+
+            groupedFoods[date].forEach(food => {
+
+                message +=
+                    `음식: ${food.menu}\n`;
+
+                message +=
+                    `주의 재료: ${food.ingredients.join(", ")}\n\n`;
+
+            });
+
+        });
+
+
+    addNotification({
+
+        title: "알레르기 위험 음식 발견",
+
+        message: message.trim(),
+
+        type: "meal",
+
+        period: selectedPeriod,
+
+        safe: false
+
+    });
+
+}
+
+
+/* =========================
+   한국 날짜 + 요일
+========================= */
+
+function formatKoreanDate(date) {
+
+    const year =
+        date.substring(0, 4);
+
+    const month =
+        date.substring(4, 6);
+
+    const day =
+        date.substring(6, 8);
+
+    const dateObject =
+        new Date(
+            Number(year),
+            Number(month) - 1,
+            Number(day)
+        );
+
+    const weekdays =
+        [
+            "일요일",
+            "월요일",
+            "화요일",
+            "수요일",
+            "목요일",
+            "금요일",
+            "토요일"
+        ];
+
+    return `
+        ${Number(month)}월
+        ${Number(day)}일
+        (${weekdays[dateObject.getDay()]})
+    `.replace(/\s+/g, " ").trim();
+
+}
+
+
+/* =========================
+   응급 대처
+========================= */
+
+function showEmergencyGuide() {
+
+    document
+        .getElementById("emergencyGuide")
+        .classList
+        .toggle("show");
+
+}
+
+
+/* =========================
+   알림 추가
+========================= */
+
+function addNotification(notification) {
+
+    notifications.unshift({
+
+        id: Date.now(),
+
+        title: notification.title,
+
+        message: notification.message,
+
+        type: notification.type || "normal",
+
+        period: notification.period || "",
+
+        safe: notification.safe || false,
+
+        date:
+            new Date().toLocaleString("ko-KR")
+
+    });
+
+    saveNotifications();
+
+    updateNotificationUI();
+
+}
+
+
+/* =========================
+   알림 저장
+========================= */
+
+function saveNotifications() {
+
+    localStorage.setItem(
+        "notifications",
+        JSON.stringify(notifications)
+    );
+
+}
+
+
+/* =========================
+   알림창 열기
+========================= */
+
+function toggleNotifications() {
+
+    document
+        .getElementById("notificationPanel")
+        .classList
+        .toggle("show");
+
+}
+
+
+/* =========================
+   알림 화면
+========================= */
+
+function updateNotificationUI() {
+
+    const list =
+        document.getElementById("notificationList");
+
+    const count =
+        document.getElementById("notificationCount");
+
+    count.innerText =
+        notifications.length;
+
+    if (notifications.length === 0) {
+
+        list.innerHTML = `
+            <p class="info">
+                아직 새로운 알림이 없습니다.
+            </p>
+        `;
+
+        return;
+
+    }
+
+    list.innerHTML = "";
+
+    notifications.forEach(notification => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            notification.safe
+            ? "notification-item safe"
+            : "notification-item";
+
+        item.innerHTML = `
+
+            <h3>
+                ${escapeHTML(notification.title)}
+            </h3>
+
+            <p>
+                ${escapeHTML(notification.message).replace(/\n/g, "<br>")}
+            </p>
+
+            <span class="notification-date">
+                ${escapeHTML(notification.date)}
+            </span>
+
+        `;
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================
+   알림 전체 삭제
+========================= */
+
+function clearNotifications() {
+
+    const result =
+        confirm("모든 알림을 삭제할까요?");
+
+    if (!result) return;
+
+    notifications = [];
+
+    saveNotifications();
+
+    updateNotificationUI();
+
+}
+
+
+/* =========================
+   HTML 안전 처리
+========================= */
+
+function escapeHTML(text) {
+
+    if (
+        text === null ||
+        text === undefined
+    ) {
+        return "";
+    }
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   처음 실행
+========================= */
+
+window.onload = function() {
+
+    document.getElementById("nickname").value =
+        localStorage.getItem("nickname") || "";
+
+    document.getElementById("apiKey").value =
+        localStorage.getItem("apiKey") || "";
+
+
+    const savedAllergies =
+        localStorage.getItem("allergies");
+
+    if (savedAllergies) {
+
+        try {
+
+            allergies =
+                JSON.parse(savedAllergies);
+
+        }
+
+        catch(error) {
+
+            allergies = [];
+
+        }
+
+    }
+
+
+    const savedSchool =
+        localStorage.getItem("school");
+
+    if (savedSchool) {
+
+        try {
+
+            selectedSchool =
+                JSON.parse(savedSchool);
+
+            document.getElementById("selectedSchool").innerText =
+                "저장된 학교: " +
+                selectedSchool.SCHUL_NM;
+
+        }
+
+        catch(error) {
+
+            selectedSchool = null;
+
+        }
+
+    }
+
+
+    updateAllergyUI();
+
+    updateNotificationUI();
+
+    setPeriod("today");
+
+};
+
+</script>
+
+</body>
+</html>
